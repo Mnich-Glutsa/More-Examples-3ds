@@ -6,14 +6,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct //definiowane struktury sprite'a, czyli nie wiem o co biega
+typedef struct //definiowane struktury sprite'a
 {
 	C2D_Sprite spr;
 	float dx, dy; // velocity
 } Sprite;
 
+int SpriteSheetID[] = {0};
+
 static C2D_SpriteSheet spriteSheet;
 static Sprite spritee[1]; //jedna instacja sprite'a
+
+int controls() {
+  	Sprite* sprite = &spritee[0];
+  	hidScanInput(); 	//Scan all the inputs. This should be done once for each frame
+
+ 	if (hidKeysDown() & KEY_START) return 1;
+
+ 	if (hidKeysDown() & KEY_A) {
+   		SpriteSheetID[0] = SpriteSheetID[0] == 0 ? 1 : 0;
+		C2D_SpriteFromSheet(&sprite->spr, spriteSheet, SpriteSheetID[0]);
+		C2D_SpriteSetCenter(&sprite->spr, 0.5f, 0.5f);
+  		C2D_SpriteSetPos(&sprite->spr, 100, 100);
+ 	}
+
+ 	return 0;
+}
 
 int main(int argc, char **argv)
 {
@@ -35,16 +53,14 @@ int main(int argc, char **argv)
 
  	Sprite* sprite = &spritee[0];
 
- 	C2D_SpriteFromSheet(&sprite->spr, spriteSheet, 0);
+ 	C2D_SpriteFromSheet(&sprite->spr, spriteSheet, SpriteSheetID[0]);
 	C2D_SpriteSetCenter(&sprite->spr, 0.5f, 0.5f);
 	C2D_SpriteSetPos(&sprite->spr, 100, 100);
 
 	// Main loop
 	while (aptMainLoop())
 	{
-		//Scan all the inputs. This should be done once for each frame
-		hidScanInput();
-  		if (hidKeysDown() & KEY_START) break;
+		if (controls() == 1) break;
 
   		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 		C2D_TargetClear(top, clrBlack);
