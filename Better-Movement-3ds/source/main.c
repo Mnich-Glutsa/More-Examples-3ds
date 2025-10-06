@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
     consoleInit(GFX_BOTTOM, NULL);
 
     u32 clrRed = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);
- 	u32 clrBlack = C2D_Color32(0x00, 0x00, 0x00, 0xFF);
+ 	u32 clrBlack = C2D_Color32(0xf9, 0x9b, 0x0b, 0xFF);
 
     C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 
